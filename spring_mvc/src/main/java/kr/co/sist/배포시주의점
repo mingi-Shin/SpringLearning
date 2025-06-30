@@ -1,0 +1,18 @@
+배포시에 Servlet/JSP를 실행하려면 : 
+	ServletInitializer.java와 SpringMvcApplication.java를 병합해서 배포해야 실행된다. (개발은 되나 배포후 실행이 안된다.)
+
+--아래와 같이 
+
+@SpringBootApplication
+public class SpringMvcApplication extends SpringBootServletInitializer {
+
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+		return application.sources(SpringMvcApplication.class);
+	}
+
+	public static void main(String[] args) {
+		SpringApplication.run(SpringMvcApplication.class, args);
+	}
+
+}

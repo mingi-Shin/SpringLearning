@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<th:block th:replace="~{fragments/external_file :: cdn_block}"></th:block>
+<style type="text/css">
+#msgDiv {
+	border: 1px solid #333;
+	font-family: 돋움;
+	font-size: 30px;
+}  
+</style>
+<script type="text/javascript">
+
+$(function(){
+	$("#btn").click(function(){
+		console.log("클릭버튼");
+		var name = "막시무스";
+		alert(`${name}님 안녕하세요. 오늘은 목요일 입니다.`);
+		alert(`[[${name}]]님 안녕하세요. 오늘은 목요일 입니다.`); /* 타임리프에서 제공하는값 쓸수있다. model에서 건너온거 쓸수있다, 현재 건너오고있는 값은 이여진  */
+	});
+}); //ready
+
+</script>
+</head>
+<body>
+<div th:replace="~{ fragments/header :: header}"></div> <!-- header라는 fragments에서 header를 쓸거다  -->
+
+<div th:replace="~{ fragments/login_box :: login(${id}, ${name2})}"></div>
+<!-- 컨트롤러에서 model값을 받아오고, 그 값을 login_box의 login에 매개변수로 전달, 그 결과를 replace 하는 것이다 -->
+
+<input type="button" id="btn" class="btn btn-success" value="클릭" > 
+
+<div id="msgDiv" th:text="${ helloMsg }">
+처음 인사를 보여주는 부분
+</div>
+
+<p  th:text="${ helloMsg2 }">
+처음 인사를 보여주는 부분
+</p>
+
+<p  th:utext="${ helloMsg2 }">
+처음 인사를 보여주는 부분
+</p>
+
+<div th:text="|${ name } 과 ${ name2 }|">
+이름들을 보여주는 영역
+</div>
+
+<div>
+<span th:text="${ name }"></span>과
+<span th:text="${ name2 }"></span>
+</div>
+
+<input type="text" th:value="${ helloMsg }" />
+
+<ul>
+	<li>
+		<a href="obj/object_value">객체 값 출력</a>
+	</li>
+	<li>
+		<a href="link/link_value">링크 출력</a>
+	</li>
+	<li>
+		<a href="img/img_view">이미지 출력</a>
+	</li>
+	<li>
+		<a href="condition/condition_view">조건문</a>
+	</li>
+</ul>
+
+<div th:insert="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

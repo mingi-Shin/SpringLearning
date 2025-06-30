@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<!-- 파비콘(favicon) 설정 링크 -->
+<link rel="shortcut icon" href="http://localhost/images/favicon.ico"/>
+
+<!-- 부트스트랩  CDN -->    
+<link rel="stylesheet" type="text/css"
+href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"/>
+<style type="text/css">
+
+</style>
+
+<!-- JQuery CDN -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js">
+</script>
+
+<script type="text/javascript">
+$(function(){
+	
+}); //ready
+</script>
+
+</head>
+<body>
+<h2>문자열 비교: 삼항연산자 사용</h2>
+<div th:text="${name == '신민기'} ? '안녕하세요? 신민기개발자님' : '반갑습니다 아무개씨' "></div>
+<div th:text="${name eq '신민기'} ? '안녕하세요? 신민기개발자님' : '반갑습니다 아무개씨' "></div>
+<h2>숫자 비교</h2>
+<div th:text="${ score > -1 && score < 101} ? ${score}: '유효점수가 아닙니다.' "></div>
+<div th:text="${ score2 gt -1 and score2 lt 101} ? ${score2}: '유효점수가 아닙니다.' "></div>
+
+<h2>th:if(조건이 맞을때), th:unless(조건이 맞지 않을때) 사용</h2>
+<!-- oDTO의 name속성에 이름이 '신민기'면 <div>에 신민기님 안녕하세요? 보여줄거야. 그렇지 않으면 '접근 거부된 계정입니다' -->
+<div th:if="${oDTO.name eq '신민기'}" th:text="|${oDTO.name}님 안녕하세요?|">접근 거부된 계정입니다.</div>
+
+<!-- oDTO의 name속성에 이름이 '신민기'가 아니면 '접근 거부된 계정입니다' -->
+<div th:unless="${oDTO.name eq '신민기'}">접근 거부된 계정입니다.</div>
+
+<h2>switch</h2>
+<div th:switch="${oDTO.role}">
+	<div th:case="'ROLE_ADMIN'">관리자</div>
+	<div th:case="'ROLE_USER'">사용자</div>
+	<div th:case="*">게스트</div>
+</div>
+
+<h2>반복</h2>
+<ul>
+<li th:each="name : ${listNames}" th:text="${name}"></li>
+</ul>
+
+<table class="table table-hover">
+<tr th:each="name : ${listNames}">
+	<td th:text="${name}"></td>
+</tr>
+</table>
+
+<select>
+	<!-- <!-- <option value="선택" disabled="disabled" selected="selected">선택</option> --> -->
+	<option th:each="name : ${listNames}" th:text="${name}" th:value="${name}" th:selected="${name eq '윈터'}"></option>
+</select>
+<br>
+
+<label th:each="name : ${listNames}">
+	<input type="checkbox"
+					th:value="${name}"
+					th:checked="${name eq '카리나' || name eq '윈터' }">
+	<span th:text="${name}"></span>
+</label>
+<br>
+
+<h2>List&lt;ImgDTO&gt; 사용</h2>
+<table class="table table-hover">
+	<thead>
+		<tr>
+			<th>짝수니?</th>
+			<th>홀수니?</th>
+			<th>0번부터(index)</th>
+			<th>1번부터(count)</th>
+			<th>이미지</th>
+			<th>설명</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr th:each="iDTO, idx : ${listImgs}">
+			<td th:text="${idx.even}"></td> <!-- 짝수니? evne, 홀수니? odd, 인덱스.index, 번호.count -->
+			<td th:text="${idx.odd}"></td>
+			<td th:text="${idx.index}"></td>
+			<td th:text="${idx.count}"></td>
+			<td><img th:src="@{/images/{img}(img=${iDTO.img}) }" style="width: 200px; height: 150px;"> </td>
+			<td th:text="${iDTO.title}"></td>
+		</tr>
+	</tbody>
+</table>
+<br>
+
+<!-- li를 반복하여 번호(1번부터), 이미지명, 타이틀을 text로 출력 -->
+<ul>
+	<li th:each="iDTO, i : ${listImgs}" th:text="|${i.count} - ${iDTO.img} - ${iDTO.title}|"></li>
+</ul>
+<br>
+
+<!-- p를 반복하여 번호(1번부터), 이미지명, 타이틀을 text로 출력 => th:block사용!! -->
+<th:block th:each="iDTO, i : ${listImgs}" >
+<p th:text="|${i.count} - ${iDTO.img} - ${iDTO.title}|"></p>
+</th:block>
+<br>
+
+<th:block th:if="${oDTO ne null}">
+	<p><strong>안녕하세요?</strong> </p>
+</th:block>
+<br>
+
+
+<hr>
+<p>관계연산자: ==(eq), !=(ne), >(gt), <(lt), >=(ge), <=(le)</p>			
+<p>논리연산자: && (and), || (or), ! (not)</p>		
+<p>기타연산자: null검사, .empty, .size</p>		
+</body>
+</html>
